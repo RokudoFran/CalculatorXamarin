@@ -61,7 +61,7 @@ namespace CalculatorXamarin
             Button button = (Button)select;
             string pressed = button.Text;
             mathOperator = pressed;
-            this.operationText.Text += mathOperator;
+            this.operationText.Text =conteiner1 + mathOperator;
             conteiner2 = mathOperator;
         }
 
@@ -69,12 +69,13 @@ namespace CalculatorXamarin
 
         void Calculate (object sender, EventArgs e)
         {
-            if (firstNumber!=0 && secondNumber!=0)
+            if (currentState == 2)
             {
                 double result = MathOperator.Calculate(firstNumber, secondNumber, mathOperator);
 
                 this.resultText.Text = result.ToString();
                 firstNumber = Convert.ToDouble(result);
+                this.operationText.Text = firstNumber.ToString();
             }
         }
 
