@@ -11,9 +11,9 @@ namespace CalculatorXamarin
     public partial class MainPage : ContentPage
     {
         double firstNumber=0, secondNumber=0;
-        string marthOperator;
-        string conteinerNumber;
-        int A = 0;
+        string mathOperator;
+        int currentState = 1;
+        string conteiner1, conteiner2;
 
         public MainPage()
         {
@@ -24,31 +24,45 @@ namespace CalculatorXamarin
         void SelectNumber(object select, EventArgs e)
         {
             Button button = (Button)select;
+            string pressed = button.Text;
 
-            if (A==0)
+            if (this.resultText.Text == "0" || currentState < 0)
             {
-                conteinerNumber = button.Text.ToString();
-                this.resultText.Text = conteinerNumber;
-                firstNumber = Convert.ToDouble(conteinerNumber);
+                this.resultText.Text = "";
+                if (currentState < 0)
+                    currentState *= -1;
             }
-            else
+
+            this.resultText.Text += pressed;
+
+            double number;
+            if (double.TryParse(this.resultText.Text, out number))
             {
-                conteinerNumber = button.Text.ToString();
-                this.resultText.Text += conteinerNumber;
-                secondNumber = Convert.ToDouble(conteinerNumber);
+                this.resultText.Text = number.ToString("");
+                if (currentState == 1)
+                {
+                    firstNumber = number;
+                    this.operationText.Text = firstNumber.ToString();
+                    conteiner1 = firstNumber.ToString();
+                }
+                else
+                {
+                    secondNumber = number;
+                    this.operationText.Text = conteiner1+conteiner2+secondNumber.ToString() ;
+                }
             }
+            
 
         }
 
         void SelectOperator(object select, EventArgs e)
         {
-            if (firstNumber != 0)
-            {
-                A = 1;
-                Button button = (Button)select;
-                marthOperator = button.Text;
-                this.resultText.Text += marthOperator;
-            }
+            currentState = -2;
+            Button button = (Button)select;
+            string pressed = button.Text;
+            mathOperator = pressed;
+            this.operationText.Text += mathOperator;
+            conteiner2 = mathOperator;
         }
 
 
@@ -57,7 +71,7 @@ namespace CalculatorXamarin
         {
             if (firstNumber!=0 && secondNumber!=0)
             {
-                double result = MathOperator.Calculate(firstNumber, secondNumber, marthOperator);
+                double result = MathOperator.Calculate(firstNumber, secondNumber, mathOperator);
 
                 this.resultText.Text = result.ToString();
                 firstNumber = Convert.ToDouble(result);
@@ -68,8 +82,9 @@ namespace CalculatorXamarin
         {
             firstNumber = 0;
             secondNumber = 0;
-            A = 0;
+            currentState = 1;
             this.resultText.Text = "0";
+            this.operationText.Text = " ";
         }
     }
 }
