@@ -34,7 +34,7 @@ namespace CalculatorXamarin
             else
             {
                 conteinerNumber = button.Text.ToString();
-                this.resultText.Text  += conteinerNumber;
+                this.resultText.Text += conteinerNumber;
                 secondNumber = Convert.ToDouble(conteinerNumber);
             }
 
@@ -51,34 +51,13 @@ namespace CalculatorXamarin
             }
         }
 
-        public static double Calculate(double value1, double value2, string mathOperator)
-        {
-            double result = 0;
 
-            switch (mathOperator)
-            {
-                case "÷":
-                    result = value1 / value2;
-                    break;
-                case "×":
-                    result = value1 * value2;
-                    break;
-                case "+":
-                    result = value1 + value2;
-                    break;
-                case "-":
-                    result = value1 - value2;
-                    break;
-            }
-
-            return result;
-        }
 
         void Calculate (object sender, EventArgs e)
         {
             if (firstNumber!=0 && secondNumber!=0)
             {
-                var result = Calculate(firstNumber, secondNumber, marthOperator);
+                double result = MathOperator.Calculate(firstNumber, secondNumber, marthOperator);
 
                 this.resultText.Text = result.ToString();
                 firstNumber = Convert.ToDouble(result);
